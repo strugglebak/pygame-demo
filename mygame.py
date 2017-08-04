@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
 import pygame
+from bullet import Bullet
+from enemy import Enemy
+
 from sys import exit
 
 resource_url = "./src/img/"
@@ -7,15 +10,13 @@ resource_url = "./src/img/"
 bg_url = resource_url + "back.jpg"
 plane_url = resource_url + "plane.png"
 bullet_url = resource_url + "bullet.png"
+enemy_url = resource_url + "enemy.png"
 
 screen_width = 450
 screen_height = 800
 
-bt_x = -1
-bt_y = -1
-
-start_bt_x = 0
 bullet_speed = 1.25
+enemy_speed = 0.3
 
 pygame.init()
 
@@ -27,8 +28,9 @@ pygame.display.set_caption("SHOOOOOOOOOOOOOOOT!!!!")
 background = pygame.image.load(bg_url).convert()
 # this "convert_alpha" method makes the pic transparent
 plane = pygame.image.load(plane_url).convert_alpha()
-bullet = pygame.image.load(bullet_url).convert_alpha()
-
+# bullet = pygame.image.load(bullet_url).convert_alpha()
+bullet = Bullet(bullet_url)
+enemy = Enemy(enemy_url)
 
 while True:
 	for event in pygame.event.get():
@@ -39,21 +41,17 @@ while True:
 	screen.blit(background, (0, 0))
 
 	(x, y) = pygame.mouse.get_pos()
+
+	bullet.move(x, y, bullet_speed)
+	# enemy.move(enemy_speed)
+	enemy.move()
+
 	x -= plane.get_width() / 2
 	y -= plane.get_height() / 2
 
-	if bt_x < 0 or bt_y < 0:
-		bt_x = x
-		bt_y = y
-
-		start_bt_x = bt_x + 20
-		bt_y = bt_y + 25
-
-	#shot the bullet
-	bt_y -= bullet_speed
-
 	#must display bullet firstly
-	screen.blit(bullet, (start_bt_x, bt_y))
+	screen.blit(bullet.image, (bullet.x, bullet.y))
 	screen.blit(plane, (x, y))
+	screen.blit(enemy.image, (enemy.x, enemy.y))
 
 	pygame.display.update()
