@@ -3,3 +3,5 @@
 ./game1.py
 ./game2.py
 ./test.py
+
+*.pyc
