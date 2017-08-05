@@ -15,8 +15,8 @@ enemy_url = resource_url + "enemy.png"
 screen_width = 450
 screen_height = 800
 
-bullet_speed = 1.25
-enemy_speed = 0.3
+internal_time = 0
+bullet_index = 0
 
 pygame.init()
 
@@ -32,6 +32,11 @@ plane = pygame.image.load(plane_url).convert_alpha()
 bullet = Bullet(bullet_url)
 enemy = Enemy(enemy_url)
 
+bullet_num = 5
+bullet_list = []
+for i in range(0, bullet_num):
+	bullet_list.append(bullet)
+
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -40,17 +45,23 @@ while True:
 
 	screen.blit(background, (0, 0))
 
-	(x, y) = pygame.mouse.get_pos()
+	internal_time -= 1
+	if internal_time < 0:
+		bullet_list[bullet_index].restart()
+		internal_time = 70
+		bullet_index = (bullet_index + 1) % bullet_num
 
-	bullet.move(x, y, bullet_speed)
-	# enemy.move(enemy_speed)
+	for t_bullet in bullet_list:
+		if t_bullet.active:
+			t_bullet.move()
+			screen.blit(t_bullet.image, (t_bullet.x, t_bullet.y))
+
 	enemy.move()
 
+	(x, y) = pygame.mouse.get_pos()
 	x -= plane.get_width() / 2
 	y -= plane.get_height() / 2
 
-	#must display bullet firstly
-	screen.blit(bullet.image, (bullet.x, bullet.y))
 	screen.blit(plane, (x, y))
 	screen.blit(enemy.image, (enemy.x, enemy.y))
 
