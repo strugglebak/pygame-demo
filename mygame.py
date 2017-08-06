@@ -37,6 +37,11 @@ bullet_list = []
 for i in range(0, bullet_num):
 	bullet_list.append(bullet)
 
+enemy_num = 5
+enemy_list = []
+for i in range(0,enemy_num):
+	enemy_list.append(enemy)
+
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -56,13 +61,14 @@ while True:
 			t_bullet.move()
 			screen.blit(t_bullet.image, (t_bullet.x, t_bullet.y))
 
-	enemy.move()
-
 	(x, y) = pygame.mouse.get_pos()
 	x -= plane.get_width() / 2
 	y -= plane.get_height() / 2
 
 	screen.blit(plane, (x, y))
-	screen.blit(enemy.image, (enemy.x, enemy.y))
+
+	for t_enemy in enemy_list:
+		t_enemy.move()
+		screen.blit(t_enemy.image, (t_enemy.x, t_enemy.y))
 
 	pygame.display.update()
