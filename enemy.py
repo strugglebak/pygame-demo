@@ -3,8 +3,8 @@ import random
 
 class Enemy:
 	def restart(self):
-		self.x = random.randint(50, 400)
-		self.y = random.randint(-200, -50)
+		self.x = random.randint(0, 450)
+		self.y = random.randint(-200, 200)
 		self.speed = random.random() + 0.1
 
 	def __init__(self, img_name):
